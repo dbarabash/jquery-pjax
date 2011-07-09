@@ -26,14 +26,19 @@ That was completely awesome, but my project needed old IEs support. So I modifie
 I hope, you'll enjoy mix of pushState and regular #!/hash navigation.
 
 Some features and changes:
+
 *    IE 7,8 support (maybe some others)
 *    mix of html5-like navigation and old-school #!/hashes
 *    i added most of ';' in lines of code for you :]. for some reason, defunkt didn't use them, but it was strange for me
 
 Some bad news:
+
 *    you HAVE to put some settings before using: 
-**      $.siteurl = 'http://yousite.com';
-**        $.container = '#pjaxcontainer';
+
+```js
+$.siteurl = 'http://yousite.com';
+$.container = '#pjaxcontainer';
+```
 
 ## What was it?
 
