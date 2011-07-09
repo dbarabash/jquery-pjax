@@ -1,4 +1,4 @@
-## pushState + ajax = pjax
+## pushState + ajax / hash navigation + ajax = pjax with normal fallback!
 
             .--.
            /    \
@@ -20,14 +20,28 @@
      jgs  |___\_.\_
           `-"--'---'
 
+## What is it now? 
+It'a a fork of defunkt's pjax library: https://github.com/defunkt/jquery-pjax .
+That was completely awesome, but my project needed old IEs support. So I modified it a bit.
+I hope, you'll enjoy mix of pushState and regular #!/hash navigation.
 
-## what is it?
+Some features and changes:
+*    IE 7,8 support (maybe some others)
+*    mix of html5-like navigation and old-school #!/hashes
+*    i added most of ';' in lines of code for you :]. for some reason, defunkt didn't use them, but it was strange for me
 
-pjax loads HTML from your server into the current page
+Some bad news:
+*    you HAVE to put some settings before using: 
+**      $.siteurl = 'http://yousite.com';
+**        $.container = '#pjaxcontainer';
+
+## What was it?
+
+Pjax loads HTML from your server into the current page
 without a full reload. It's ajax with real permalinks,
 page titles, and a working back button that fully degrades.
 
-pjax enhances the browsing experience - nothing more.
+Pjax enhances the browsing experience - nothing more.
 
 You can find a demo on <http://pjax.heroku.com/>
 
