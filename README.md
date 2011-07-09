@@ -30,6 +30,7 @@ Some features and changes:
 *    IE 7,8 support (maybe some others)
 *    mix of html5-like navigation and old-school #!/hashes
 *    i added most of ';' in lines of code for you :]. for some reason, defunkt didn't use them, but it was strange for me
+*    links from both kinds of browsers are interchangable
 
 Some bad news:
 
@@ -224,22 +225,18 @@ $('body')
 
 ## browser support
 
-pjax only works with browsers that support the history.pushState API.
+Pjax works with browses that support the history.pushState API and old-ones, that don't. For the lasts we use hashes.
 
-For a table of supported browsers see: <http://caniuse.com/#search=pushstate>
+For a history API's table of supported browsers see: <http://caniuse.com/#search=pushstate>
 
 To check if pjax is supported, use the `$.support.pjax` boolean.
 
-When pjax is not supported, `$('a').pjax()` calls will do nothing (aka links
-work normally) and `$.pjax({url:url})` calls will redirect to the given URL.
+When history API is not supported, `$('a').pjax()` calls will do use $.ajax to load page and `window.location.hash` to identify itself. On page load without history API script loads page due to hash.
 
 
 ## install it
 
-```
-$ cd path/to/js
-$ wget https://github.com/defunkt/jquery-pjax/raw/master/jquery.pjax.js
-```
+Download 
 
 Then, in your HTML:
 
@@ -249,14 +246,3 @@ Then, in your HTML:
 
 Replace `path/to/js` with the path to your JavaScript directory,
 e.g. `public/javascripts`.
-
-
-## minimize it
-
-```
-curl \
-  -d output_info=compiled_code \
-  -d compilation_level=SIMPLE_OPTIMIZATIONS \
-  -d code_url=https://github.com/defunkt/jquery-pjax/raw/master/jquery.pjax.js \
-  http://closure-compiler.appspot.com/compile
-```
