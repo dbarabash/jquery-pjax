@@ -163,6 +163,19 @@ That is, the page without any layout.
 As you can see in the "ajax call" example above, pjax sets a custom 'X-PJAX'
 header to 'true' when it makes an ajax request to make detecting it easy.
 
+This is for PHP:
+
+```php
+if (!isset($_SERVER['HTTP_X_PJAX'])
+{
+   // here is regular-kind load
+}
+else
+{
+   // here you don't print page layout — just the page
+}
+```
+
 In Rails, check for `request.headers['X-PJAX']`:
 
 ```ruby
