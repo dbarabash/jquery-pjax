@@ -210,14 +210,28 @@ $.pjax = function( options ) {
   return $.pjax.xhr;
 }
 
+// Is pjax supported by this browser?
+$.support.pjax = window.history && window.history.pushState;
+
 // While page is loading, we should handle different URL types
 var hash = window.location.hash.toString();
-if( hash.substr(0,2) == '#!' )
+
+if( hash.length > 0 )
 {
    if( $.support.pjax )
-      window.location = $.siteurl+hash.substr(2);
-   else
-      window.location = $.siteurl+'/#!'+hash.substr(2);
+      location = $.siteurl+hash.substr(2);
+   else if( hash.substr(0,2) == '#!')
+   {
+      $.pjax({
+         url: $.siteurl+hash.substr(2),
+         container: $.container
+      })
+   }
+}
+else if( location.pathname.length > 1 )
+{
+    if( !$.support.pjax )
+      window.location = $.siteurl+'/#!'+window.location.pathname;
 }
 
 // If there is no pjax support, we should handle hash changes
@@ -279,23 +293,9 @@ $(window).bind('popstate', function(event){
   }
 })
 
-
 // Add the state property to jQuery's event object so we can use it in
 // $(window).bind('popstate')
 if ( $.inArray('state', $.event.props) < 0 )
   $.event.props.push('state');
-
-
-// Is pjax supported by this browser?
-$.support.pjax = window.history && window.history.pushState;
-
-// This is not used due to hash support
-// Fall back to normalcy for older browsers.
-/*if ( !$.support.pjax ) {
-  $.pjax = function( options ) {
-    window.location = $.isFunction(options.url) ? options.url() : options.url;
-  };
-  $.fn.pjax = function() { return this };
-}*/
 
 })(jQuery);
