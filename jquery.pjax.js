@@ -220,13 +220,6 @@ if( hash.length > 0 )
 {
    if( $.support.pjax )
       location = $.siteurl+hash.substr(2);
-   else if( hash.substr(0,2) == '#!')
-   {
-      $.pjax({
-         url: $.siteurl+hash.substr(2),
-         container: $.container
-      })
-   }
 }
 else if( location.pathname.length > 1 )
 {
