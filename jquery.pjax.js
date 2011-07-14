@@ -262,10 +262,10 @@ if( hash.length > 0 )
       location = $.siteurl+hash.substr(2);
 
 }
-else if( location.pathname.length > 1 )
+else if( location.pathname.length > 1 || location.search.length > 1 )
 {
     if( !$.support.pjax )
-      window.location = $.siteurl+'/#!'+window.location.pathname;
+      window.location = $.siteurl+'/#!'+window.location.pathname+window.location.search;
 
 }
 
@@ -284,8 +284,8 @@ if( !$.support.pjax )
                   return xhr.setRequestHeader('X-PJAX','true');
                },
                success: function(msg){
-                  $($.container).trigger('success.pjax');
                   $($.container).html(msg);
+                  $($.container).trigger('success.pjax');
                },
                complete: function(jqXHR){
                   $($.container).trigger('complete.pjax', jqXHR);
