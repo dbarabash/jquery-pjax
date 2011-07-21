@@ -90,8 +90,10 @@ $.fn.pjaxform = function( container, options ) {
   }
 
   return this.live('submit', function(event){
+    $(options.container).trigger('form-submit.pjax', $(this));
     data = $(this).serialize();
     options.type = $(this).attr('method');
+
     var defaults = {
       url: (options.type && options.type.toUpperCase()=='GET')?this.action+'?'+data:this.action,
       push: (options.type && options.type.toUpperCase()=='GET')?true:false,
@@ -150,18 +152,18 @@ $.pjax = function( options ) {
     type: 'POST',
     dataType: 'html',
     siteurl : $.siteurl,
-    beforeSend: function(xhr){
-      $container.trigger('start.pjax')
-      xhr.setRequestHeader('X-PJAX', 'true')
+    beforeSend: function(jqXHR, settings){
+      jqXHR.setRequestHeader('X-PJAX', 'true');
+      $container.trigger('start.pjax', [jqXHR, settings]);
     },
-    error: function(data){
-      this.success(data.responseText);
-      $container.trigger('error.pjax');
+    error: function(jqXHR, textStatus, errorThrown){
+      this.success(jqXHR.responseText);
+      $container.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
     },
-    complete: function(jqXHR){
-      $container.trigger('complete.pjax', jqXHR);
+    complete: function(jqXHR, textStatus){
+      $container.trigger('complete.pjax', [jqXHR, textStatus]);
     },
-    success: function(data){
+    success: function(data, textStatus, jqXHR){
       // If we got no data or an entire web page, go directly
       // to the page and let normal error handling happen.
 
@@ -227,7 +229,7 @@ $.pjax = function( options ) {
 
       // Invoke their success handler if they gave us one.
       success.apply(this, arguments);
-      $container.trigger('success.pjax');
+      $container.trigger('success.pjax', [data, textStatus, jqXHR]);
     }
   }
 
@@ -245,7 +247,7 @@ $.pjax = function( options ) {
   }
 
   $.pjax.xhr = $.ajax(options);
-  $(document).trigger('pjax', $.pjax.xhr, options);
+  $(document).trigger('pjax', [$.pjax.xhr, options]);
 
   return $.pjax.xhr;
 }
@@ -279,19 +281,19 @@ if( !$.support.pjax )
          $.ajax({
                type: "POST",
                url: $.siteurl+hash.replace('#!',''),
-               beforeSend : function(xhr) {
-                  $($.container).trigger('start.pjax');
-                  return xhr.setRequestHeader('X-PJAX','true');
+               beforeSend : function(jqXHR, settings) {
+                  jqXHR.setRequestHeader('X-PJAX','true');
+                  $($.container).trigger('start.pjax', [jqXHR, settings]);
                },
-               success: function(msg){
-                  $($.container).html(msg);
-                  $($.container).trigger('success.pjax');
+               success: function(data, textStatus, jqXHR){
+                  $($.container).html(data);
+                  $($.container).trigger('success.pjax', [data, textStatus, jqXHR]);
                },
-               complete: function(jqXHR){
-                  $($.container).trigger('complete.pjax', jqXHR);
+               complete: function(jqXHR, textStatus){
+                  $($.container).trigger('complete.pjax', [jqXHR, textStatus]);
                },
-               error: function(a,b,c) {
-                  $($.container).trigger('error.pjax');
+               error: function(jqXHR, textStatus, errorThrown) {
+                  $($.container).trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
                }
             });
 
