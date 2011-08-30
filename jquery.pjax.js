@@ -354,8 +354,9 @@
     siteurl : $.siteurl,
     beforeSend: function(jqXHR, settings){
       jqXHR.setRequestHeader('X-PJAX', 'true');
+      jqXHR.setRequestHeader('X-PJAX-SUPPORT', $.support.pjax?true:false);
       jqXHR.setRequestHeader('X-Referer', ($.support.pjax)?window.location.href:window.location.href.replace('/#!', ''));
-      this.trigger('start.pjax', [jqXHR, settings])
+      this.trigger('start.pjax', [jqXHR, settings]);
     },
     error: function(jqXHR, textStatus, errorThrown){
       this.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
@@ -436,6 +437,7 @@
           url: $.siteurl+hash.replace('#!',''),
           beforeSend : function(jqXHR, settings) {
             jqXHR.setRequestHeader('X-PJAX','true');
+            jqXHR.setRequestHeader('X-PJAX-SUPPORT', $.support.pjax?true:false);
             jqXHR.setRequestHeader('X-Referer', $.hash.replace('#!',''));
             $($.container).trigger('start.pjax', [jqXHR, settings]);
           },
