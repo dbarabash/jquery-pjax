@@ -343,6 +343,7 @@
     timeout: 650,
     push: true,
     replace: false,
+    url: $.support.pjax ? window.location.href : window.location.hash.substr(2),
     // We want the browser to maintain two separate internal caches: one for
     // pjax'd partial page loads and one for normal page loads. Without
     // adding this secret parameter, some browsers will often confuse the two.
