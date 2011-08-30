@@ -112,8 +112,9 @@
 
 (function($){
   if (!$.hash) $.hash = '#!/';
-  if (!$.siteurl) $.siteurl = 'http://yoursite.com'; // your site url
-  if (!$.container) $.container = '#pjaxcontainer'; // container SELECTOR to use for hash navigation
+  if (!$.siteurl) $.siteurl = document.location.protocol+'//'+document.location.host; // your site url
+  if (!$.container) $.container = '#content'; // container SELECTOR to use for hash navigation
+
 
   // When called on a link, fetches the href with ajax into the
   // container specified as the first parameter or with the data-pjax
