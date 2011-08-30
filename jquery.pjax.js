@@ -115,6 +115,11 @@
   if (!$.siteurl) $.siteurl = document.location.protocol+'//'+document.location.host; // your site url
   if (!$.container) $.container = '#content'; // container SELECTOR to use for hash navigation
 
+  // Is pjax supported by this browser?
+  $.support.pjax =
+  window.history && window.history.pushState && window.history.replaceState
+  // pushState isn't reliable on iOS yet.
+  && !navigator.userAgent.match(/(iPod|iPhone|iPad|WebApps\/.+CFNetwork)/);
 
   // When called on a link, fetches the href with ajax into the
   // container specified as the first parameter or with the data-pjax
@@ -404,12 +409,6 @@
   if ( $.inArray('state', $.event.props) < 0 )
     $.event.props.push('state');
 
-
-  // Is pjax supported by this browser?
-  $.support.pjax =
-  window.history && window.history.pushState && window.history.replaceState
-  // pushState isn't reliable on iOS yet.
-  && !navigator.userAgent.match(/(iPod|iPhone|iPad|WebApps\/.+CFNetwork)/);
 
   // While page is loading, we should handle different URL types
   var hash = window.location.hash.toString();
