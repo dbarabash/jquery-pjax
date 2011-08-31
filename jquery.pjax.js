@@ -366,6 +366,8 @@
     },
     error: function(jqXHR, textStatus, errorThrown){
       this.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
+      if ( textStatus !== 'abort' )
+      window.location = pjax.options.url;
     },
     complete: function(jqXHR, textStatus){
       this.trigger('complete.pjax', [jqXHR, textStatus]);
