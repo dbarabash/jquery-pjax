@@ -194,7 +194,12 @@
 
     return this.live('submit', function(event){
       $(options.container).trigger('form-submit.pjax', $(this));
-      data = $(this).serialize();
+      if (typeof options.serialize !=='undefined') {
+        var data = options.serialize(this);
+      }
+      else {
+        var data = $(this).serialize();
+      }
       options.type = $(this).attr('method');
 
       var defaults = {
