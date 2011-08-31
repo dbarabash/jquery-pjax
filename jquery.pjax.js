@@ -330,6 +330,21 @@
       this.trigger('success.pjax', [data, textStatus, jqXHR]);
     }
 
+    options.beforeSend = function(jqXHR, settings){
+      jqXHR.setRequestHeader('X-PJAX', 'true');
+      jqXHR.setRequestHeader('X-PJAX-SUPPORT', $.support.pjax?true:false);
+      jqXHR.setRequestHeader('X-Referer', ($.support.pjax)?window.location.href:window.location.href.replace('/#!', ''));
+      this.trigger('start.pjax', [jqXHR, settings]);
+    }
+    options.error = function(jqXHR, textStatus, errorThrown){
+      this.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
+      if ( textStatus !== 'abort' )
+        window.location = options.url;
+    }
+    options.complete = function(jqXHR, textStatus){
+      this.trigger('complete.pjax', [jqXHR, textStatus]);
+    }
+
     // Cancel the current request if we're already pjaxing
     var xhr = pjax.xhr;
     if ( xhr && xhr.readyState < 4) {
@@ -357,21 +372,7 @@
     },
     type: 'GET',
     dataType: 'html',
-    siteurl : $.siteurl,
-    beforeSend: function(jqXHR, settings){
-      jqXHR.setRequestHeader('X-PJAX', 'true');
-      jqXHR.setRequestHeader('X-PJAX-SUPPORT', $.support.pjax?true:false);
-      jqXHR.setRequestHeader('X-Referer', ($.support.pjax)?window.location.href:window.location.href.replace('/#!', ''));
-      this.trigger('start.pjax', [jqXHR, settings]);
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-      this.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
-      if ( textStatus !== 'abort' )
-      window.location = pjax.options.url;
-    },
-    complete: function(jqXHR, textStatus){
-      this.trigger('complete.pjax', [jqXHR, textStatus]);
-    }
+    siteurl : $.siteurl
   }
 
 
