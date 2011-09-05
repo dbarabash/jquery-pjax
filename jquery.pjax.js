@@ -375,6 +375,7 @@
     data: {
       _pjax: true
     },
+    cache:false,
     type: 'GET',
     dataType: 'html',
     siteurl : $.siteurl
@@ -442,6 +443,7 @@
       if ( (hash.substr(0,2) == '#!' || hash=='') && hash != $.hash) {
         $.ajax({
           type: "GET",
+          cache:false,
           url: $.siteurl+hash.replace('#!',''),
           beforeSend : function(jqXHR, settings) {
             jqXHR.setRequestHeader('X-PJAX','true');
