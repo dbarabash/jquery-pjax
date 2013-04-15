@@ -332,7 +332,7 @@
 
       // Invoke their success handler if they gave us one.
       success.apply(this, arguments);
-      this.trigger('success.pjax', [data, textStatus, jqXHR]);
+      this.trigger('success.pjax', [data, textStatus, jqXHR, settings]);
     }
 
     options.beforeSend = function(jqXHR, settings){
@@ -342,12 +342,12 @@
       this.trigger('start.pjax', [jqXHR, settings]);
     }
     options.error = function(jqXHR, textStatus, errorThrown){
-      this.trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
+      this.trigger('error.pjax', [jqXHR, textStatus, errorThrown, settings]);
       if ( textStatus !== 'abort' )
         window.location = options.url;
     }
     options.complete = function(jqXHR, textStatus){
-      this.trigger('complete.pjax', [jqXHR, textStatus]);
+      this.trigger('complete.pjax', [jqXHR, textStatus, settings]);
     }
 
     // Cancel the current request if we're already pjaxing
@@ -453,13 +453,13 @@
           },
           success: function(data, textStatus, jqXHR){
             $($.container).html(data);
-            $($.container).trigger('success.pjax', [data, textStatus, jqXHR]);
+            $($.container).trigger('success.pjax', [data, textStatus, jqXHR, settings]);
           },
           complete: function(jqXHR, textStatus){
-            $($.container).trigger('complete.pjax', [jqXHR, textStatus]);
+            $($.container).trigger('complete.pjax', [jqXHR, textStatus, settings]);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            $($.container).trigger('error.pjax', [jqXHR, textStatus, errorThrown]);
+            $($.container).trigger('error.pjax', [jqXHR, textStatus, errorThrown, settings]);
           }
         });
 
